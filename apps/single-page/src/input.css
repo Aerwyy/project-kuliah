@@ -1,1 +1,61 @@
 @import "tailwindcss";
+@theme {
+  --font-heading: "Balsamiq Sans", cursive;
+  --font-body: "Fredoka", sans-serif;
+
+  --color-primary: #436436;
+  --color-secondary: #C5A059;
+  --color-surface: #FFFFFF;
+  --color-contrast: #2D2D2D;
+  --color-surface-var: #F4F1EA;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Fredoka:wght@300..700&display=swap');
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+    color: var(--color-contrast);
+    background-color: var(--color-surface);
+    @apply text-[16px] md:text-[18px];
+  }
+
+  h1 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    @apply text-[40px] md:text-[52px] font-bold mb-4 leading-tight;
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    @apply text-[31px] md:text-[38px] font-bold mb-3 leading-snug;
+  }
+
+  h3 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    @apply text-[25px] md:text-[28px] font-bold mb-2 leading-snug;
+  }
+
+  h4 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    @apply text-[20px] md:text-[21px] font-bold mb-2 leading-normal;
+  }
+
+  p {
+    font-family: var(--font-body);
+    color: var(--color-contrast);
+
+    @apply text-[16px] md:text-[18px];
+
+    @apply leading-relaxed;
+
+    @apply mb-4;
+  }
+
+  p:last-child {
+    @apply mb-0;
+  }
+}
