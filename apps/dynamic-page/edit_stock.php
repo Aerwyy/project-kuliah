@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $price = $_POST['price'];
     $stock = $_POST['stock'];
     
-    // Ambil URL gambar lama sebagai default (jika user tidak upload gambar baru)
+    // Ambil URL gambar lama sebagai default
     $image_url = $_POST['old_image_url']; 
 
     // Cek apakah ada file gambar BARU yang diupload
@@ -32,10 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             $target_file = $target_dir . $new_file_name;
 
             if (move_uploaded_file($file_tmp, $target_file)) {
-                // Gambar baru berhasil diupload, timpa variabel $image_url
+                // Gambar baru berhasil diupload, timpa variabel image_url
                 $image_url = $target_file;
             } else {
-                $pesan_error = "Gagal memindahkan file gambar baru.";
+                $pesan_error = "Gagal memindahkan file gambar baru";
             }
         } else {
             $pesan_error = "Format gambar tidak didukung!";
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         $stmt->bind_param("ssdsii", $name, $desc, $price, $image_url, $stock, $id);
         
         if ($stmt->execute()) {
-            $pesan_sukses = "Plant updated successfully!";
+            $pesan_sukses = "Update success!";
         } else {
             $pesan_error = "Database error: Gagal mengupdate data.";
         }
@@ -66,14 +66,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
   <title>Dashboard - Monstera</title>
 </head>
 <body class="bg-surface-var overflow-x-hidden md:flex min-h-screen">
-
-  <!-- Sidebar (Desktop) -->
-  <aside class="w-64 bg-surface shadow-xl hidden md:flex flex-col z-10">
+  <aside id="sidebar" class="w-64 bg-surface shadow-xl hidden md:flex flex-col z-40">
     <div class="p-6 mb-4">
       <h2 class="text-3xl font-bold text-primary">Monstera</h2>
     </div>
     <ul class="flex-1 px-4 space-y-2">
-      <!-- Logic Class Active: ngecek nilai $current_page -->
       <li>
         <a href="admin.php" class="flex items-center px-4 py-3 rounded-lg font-bold transition-transform">Dashboard Overview</a>
       </li>
@@ -92,18 +89,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     </div>
   </aside>
 
-  <!-- Mobile Header -->
   <div class="md:hidden bg-surface shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
     <h4 class="text-2xl font-bold text-primary mb-0">Monstera</h4>
-    <button class="text-primary font-bold text-2xl">☰</button>
+    <button id="hamburger-btn" class="text-primary font-bold text-2xl">☰</button>
   </div>
 
   <!-- Main Content -->
   <main class="flex-1 p-6 md:p-10 overflow-y-auto">
-    <?php 
-    // ==========================================
-    // TAMPILAN FORM EDIT (Jika ada ID di URL)
-    // ==========================================
+    <?php
     if (isset($_GET['id'])): 
         $id_edit = $_GET['id'];
         $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
@@ -138,7 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
           <div class="grid grid-cols-2 gap-4 mb-4">
             <div>
               <label class="block text-contrast font-bold mb-2">Price (Rp)</label>
-              <!-- step="0.01" dihapus, karena format Rupiah tidak butuh desimal -->
               <input type="number" name="price" value="<?php echo $data_edit['price']; ?>" required class="w-full px-4 py-3 rounded-lg outline border border-surface-var bg-surface-var text-contrast">
             </div>
             <div>
@@ -152,9 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             <img src="<?php echo htmlspecialchars($data_edit['image_url']); ?>" alt="Current Image" class="h-32 object-cover rounded mb-4 shadow">
             
             <label class="block text-contrast font-bold mb-2">Upload New Image (Optional)</label>
-            <!-- Atribut required dihilangkan karena upload gambar baru bersifat opsional -->
             <input type="file" name="image_file" accept="image/png, image/jpeg, image/webp" class="w-full px-4 py-3 rounded-lg outline border border-surface-var bg-surface text-contrast">
-            <p class="text-sm text-contrast mt-2 italic">Biarkan kosong jika tidak ingin mengubah gambar.</p>
+            <p class="text-sm text-contrast mt-2 italic">Biarkan kosong jika tidak ingin mengubah</p>
           </div>
           
           <button type="submit" class="bg-primary text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:opacity-90">Update Plant</button>
@@ -164,13 +155,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
     <?php 
         endif; 
-    // ==========================================
-    // TAMPILAN TABEL (Jika tidak ada ID di URL)
-    // ==========================================
     else: 
     ?>
       <div class="bg-surface rounded-lg shadow-lg p-6 md:p-8">
-        <h2 class="text-3xl font-bold text-primary mb-6">Select Plant to Edit</h2>
+        <h2 class="text-3xl font-bold text-primary mb-6">Select Product to Edit</h2>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
@@ -207,5 +195,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     <?php endif; ?>
   </main>
 
+  <script>
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    hamburgerBtn.addEventListener('click', () => {
+
+      sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('flex');
+      
+      sidebar.classList.toggle('fixed');
+      sidebar.classList.toggle('top-0');
+      sidebar.classList.toggle('left-0');
+      sidebar.classList.toggle('h-screen');
+    });
+  </script>
 </body>
 </html>

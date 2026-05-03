@@ -20,14 +20,11 @@ $total_plants = $query_total->fetch_assoc()['total_plants'] ?? 0;
   <title>Dashboard - Monstera</title>
 </head>
 <body class="bg-surface-var overflow-x-hidden md:flex min-h-screen">
-
-  <!-- Sidebar (Desktop) -->
-  <aside class="w-64 bg-surface shadow-xl hidden md:flex flex-col z-10">
+  <aside id="sidebar" class="w-64 bg-surface shadow-xl hidden md:flex flex-col z-40">
     <div class="p-6 mb-4">
       <h2 class="text-3xl font-bold text-primary">Monstera</h2>
     </div>
     <ul class="flex-1 px-4 space-y-2">
-      <!-- Logic Class Active: ngecek nilai $current_page -->
       <li>
         <a href="admin.php" class="flex items-center px-4 py-3 rounded-lg font-bold transition-transform">Dashboard Overview</a>
       </li>
@@ -46,10 +43,9 @@ $total_plants = $query_total->fetch_assoc()['total_plants'] ?? 0;
     </div>
   </aside>
 
-  <!-- Mobile Header -->
   <div class="md:hidden bg-surface shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
     <h4 class="text-2xl font-bold text-primary mb-0">Monstera</h4>
-    <button class="text-primary font-bold text-2xl">☰</button>
+    <button id="hamburger-btn" class="text-primary font-bold text-2xl">☰</button>
   </div>
 
   <!-- Main Content -->
@@ -58,18 +54,35 @@ $total_plants = $query_total->fetch_assoc()['total_plants'] ?? 0;
     <header class="flex justify-between items-center mb-10">
       <div>
         <h1 class="text-4xl md:text-5xl font-bold text-primary mb-2">Hello, <?php echo $nama_user; ?>!</h1>
-        <p class="text-contrast font-bold">Here is your botanical overview today.</p>
+        <p class="text-contrast font-bold">Here is your product overview</p>
       </div>
     </header>
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
       <div class="bg-surface p-6 rounded-lg shadow-lg border-t-[6px] border-primary">
-        <h3 class="text-secondary text-xl mb-2">Total Plants</h3>
+        <h3 class="text-secondary text-xl mb-2">Total Stock Plants</h3>
         <p class="text-5xl font-bold text-primary mb-0"><?php echo $total_plants; ?></p>
       </div>
     </div>
   </main>
 
+<script>
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    hamburgerBtn.addEventListener('click', () => {
+
+      sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('flex');
+      
+      sidebar.classList.toggle('fixed');
+      sidebar.classList.toggle('top-0');
+      sidebar.classList.toggle('left-0');
+      sidebar.classList.toggle('h-screen');
+    });
+  </script>
+</body>
+</html>
 </body>
 </html>

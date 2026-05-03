@@ -7,7 +7,6 @@ if (!isset($_SESSION['is_logged_in']) || $_SESSION['is_logged_in'] !== true) {
 require_once 'connect.php';
 
 $nama_user = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "User";
-// Logic Add Data & Upload Gambar
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $desc = $_POST['description'];
@@ -15,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stock = $_POST['stock'];
 
     // Konfigurasi Upload
-    $target_dir = "./src/img/"; // Pastikan folder ini sudah ada
+    $target_dir = "./src/img/";
     $image_url = ""; 
 
     // Mengecek apakah ada file yang diupload dan tidak ada error
@@ -25,20 +24,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $file_name = $_FILES['image_file']['name'];
         $file_tmp = $_FILES['image_file']['tmp_name'];
         
-        // Ekstensi file (contoh: jpg, png, webp)
+        // Ekstensi file
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
         
-        // Filter ekstensi yang diizinkan biar aman
+        // Filter ekstensi
         $allowed_extensions = array("jpg", "jpeg", "png", "webp");
 
         if (in_array($file_ext, $allowed_extensions)) {
-            // Rename file biar unik (gabungan waktu sekarang + nama asli yang dihilangkan spasinya)
+            // Rename file biar unik
             $new_file_name = time() . "_" . str_replace(" ", "_", $file_name);
             $target_file = $target_dir . $new_file_name;
 
             // Pindahkan file ke folder src/img/
             if (move_uploaded_file($file_tmp, $target_file)) {
-                $image_url = $target_file; // Ini yang disimpan ke database: ./src/img/namafile.webp
+                $image_url = $target_file;
                 
                 // Masukkan data ke Database
                 $stmt = $conn->prepare("INSERT INTO products (name, description, price, image_url, stock) VALUES (?, ?, ?, ?, ?)");
@@ -47,17 +46,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($stmt->execute()) {
                     $pesan_sukses = "New plant and image added successfully!";
                 } else {
-                    $pesan_error = "Database error: Gagal menyimpan data.";
+                    $pesan_error = "Database error: Gagal menyimpan data";
                 }
                 $stmt->close();
             } else {
-                $pesan_error = "Gagal memindahkan file gambar ke folder.";
+                $pesan_error = "Gagal memindahkan file gambar ke folder";
             }
         } else {
-            $pesan_error = "Format gambar tidak didukung! Hanya JPG, JPEG, PNG, dan WEBP.";
+            $pesan_error = "Format gambar tidak didukung! Hanya JPG, JPEG, PNG, dan WEBP";
         }
     } else {
-        $pesan_error = "Silakan pilih gambar terlebih dahulu!";
+        $pesan_error = "Pilih gambar terlebih dahulu!";
     }
 }
 ?>
@@ -71,14 +70,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <title>Dashboard - Monstera</title>
 </head>
 <body class="bg-surface-var overflow-x-hidden md:flex min-h-screen">
-
-  <!-- Sidebar (Desktop) -->
-  <aside class="w-64 bg-surface shadow-xl hidden md:flex flex-col z-10">
+  <aside id="sidebar" class="w-64 bg-surface shadow-xl hidden md:flex flex-col z-40">
     <div class="p-6 mb-4">
       <h2 class="text-3xl font-bold text-primary">Monstera</h2>
     </div>
     <ul class="flex-1 px-4 space-y-2">
-      <!-- Logic Class Active: ngecek nilai $current_page -->
       <li>
         <a href="admin.php" class="flex items-center px-4 py-3 rounded-lg font-bold transition-transform">Dashboard Overview</a>
       </li>
@@ -97,10 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </aside>
 
-  <!-- Mobile Header -->
   <div class="md:hidden bg-surface shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
     <h4 class="text-2xl font-bold text-primary mb-0">Monstera</h4>
-    <button class="text-primary font-bold text-2xl">☰</button>
+    <button id="hamburger-btn" class="text-primary font-bold text-2xl">☰</button>
   </div>
 
   <!-- Main Content -->
@@ -110,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <form method="POST" action="" enctype="multipart/form-data">
         <div class="mb-4">
           <label class="block text-contrast font-bold mb-2">Plant Name</label>
-          <input type="text" name="name" required class="w-full px-4 py-3 rounded-lg outline border border-surface-var bg-surface-var text-contrast" placeholder="e.g. Monstera Deliciosa">
+          <input type="text" name="name" required class="w-full px-4 py-3 rounded-lg outline border border-surface-var bg-surface-var text-contrast">
         </div>
         <div class="mb-4">
           <label class="block text-contrast font-bold mb-2">Description</label>
@@ -129,12 +124,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="mb-8">
           <label class="block text-contrast font-bold mb-2">Upload Plant Image</label>
           <input type="file" name="image_file" accept="image/png, image/jpeg, image/webp" required class="w-full px-4 py-3 rounded-lg outline border border-surface-var bg-surface-var text-contrast">
-          <p class="text-sm text-contrast mt-2 italic">Format: JPG, PNG, WEBP. Max size: 2MB (disarankan).</p>
         </div>
         <button type="submit" class="bg-primary text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:opacity-90">Save Plant</button>
       </form>
     </div>
   </main>
 
+<script>
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    hamburgerBtn.addEventListener('click', () => {
+
+      sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('flex');
+      
+      sidebar.classList.toggle('fixed');
+      sidebar.classList.toggle('top-0');
+      sidebar.classList.toggle('left-0');
+      sidebar.classList.toggle('h-screen');
+    });
+  </script>
 </body>
 </html>

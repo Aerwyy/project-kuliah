@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// Kalau sudah login, langsung ke dashboard
 if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
     header("Location: admin.php");
     exit;
 }
 
-// Panggil file koneksi database
 require_once 'connect.php';
 
 $error = '';
@@ -15,8 +13,6 @@ $error = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
-
-    // Gunakan Prepared Statement
     $stmt = $conn->prepare("SELECT id, name, password FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -24,8 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        
-        // Pengecekan Plain Text
         if ($password === $user['password']) {
             $_SESSION['is_logged_in'] = true;
             $_SESSION['user_name'] = $user['name']; 
@@ -39,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $error = "Email atau password salah!";
     }
-    
     $stmt->close();
 }
 ?>

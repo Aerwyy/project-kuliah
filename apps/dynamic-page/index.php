@@ -4,14 +4,12 @@ require_once 'connect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'buy') {
     $product_id = $_POST['product_id'];
 
-    // Cek stok saat ini dulu untuk memastikan belum habis
     $cek_stmt = $conn->prepare("SELECT stock FROM products WHERE id = ?");
     $cek_stmt->bind_param("i", $product_id);
     $cek_stmt->execute();
     $hasil = $cek_stmt->get_result()->fetch_assoc();
     $cek_stmt->close();
 
-    // Jika stok masih ada (> 0), jalankan query update
     if ($hasil && $hasil['stock'] > 0) {
         $update_stmt = $conn->prepare("UPDATE products SET stock = stock - 1 WHERE id = ?");
         $update_stmt->bind_param("i", $product_id);
@@ -19,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         $update_stmt->close();
     }
 
-    // Redirect kembali ke bagian shop biar kalau di-refresh gak submit ulang
     header("Location: index.php#shop");
     exit;
 }
@@ -162,6 +159,7 @@ atmosphere.</p>
       if ($result->num_rows > 0) {
           while($row = $result->fetch_assoc()) {
       ?>
+
           <div class="bg-surface rounded-lg shadow-xl overflow-hidden flex flex-col transition-transform hover:-translate-y-2 duration-300">
             <img src="<?php echo htmlspecialchars($row['image_url']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" class="w-full h-64 object-cover">
             <div class="p-6 flex flex-col flex-grow">
@@ -171,19 +169,17 @@ atmosphere.</p>
               <div class="mt-auto">
                 <p class="text-xs text-contrast mb-2">Stok: <span class="font-bold"><?php echo htmlspecialchars($row['stock']); ?></span></p>
                 <span class="block text-2xl font-bold text-secondary mb-4">Rp <?php echo number_format($row['price'], 0, ',', '.'); ?></span>
-                
-                <!-- Logic Tombol Berubah Menjadi Form Pembelian -->
+              
                 <?php if ($row['stock'] > 0): ?>
-                  <!-- Form jika stok masih ada -->
                   <form method="POST" action="index.php">
                     <input type="hidden" name="action" value="buy">
                     <input type="hidden" name="product_id" value="<?php echo $row['id']; ?>">
                     <button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-lg shadow-lg hover:opacity-90 transition-opacity cursor-pointer">
-                      Beli Sekarang
+                      Buy Now
                     </button>
                   </form>
                 <?php else: ?>
-                  <!-- Tombol disable jika stok habis (0) -->
+                  <!-- Tombol disable jika stok habis -->
                   <button disabled class="w-full bg-gray-400 text-white font-bold py-3 rounded-lg shadow-inner cursor-not-allowed">
                     Out of Stock
                   </button>
@@ -192,10 +188,11 @@ atmosphere.</p>
               </div>
             </div>
           </div>
+
       <?php
           } 
       } else {
-          echo "<p class='col-span-full text-center text-contrast text-xl'>Currently no plants available. Check back soon!</p>";
+          echo "<p class='col-span-full text-center text-contrast text-xl'>Currently no plants available</p>";
       }
       ?>
 

@@ -47,14 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
   <title>Dashboard - Monstera</title>
 </head>
 <body class="bg-surface-var overflow-x-hidden md:flex min-h-screen">
-
-  <!-- Sidebar (Desktop) -->
-  <aside class="w-64 bg-surface shadow-xl hidden md:flex flex-col z-10">
+  <aside id="sidebar" class="w-64 bg-surface shadow-xl hidden md:flex flex-col z-40">
     <div class="p-6 mb-4">
       <h2 class="text-3xl font-bold text-primary">Monstera</h2>
     </div>
     <ul class="flex-1 px-4 space-y-2">
-      <!-- Logic Class Active: ngecek nilai $current_page -->
       <li>
         <a href="admin.php" class="flex items-center px-4 py-3 rounded-lg font-bold transition-transform">Dashboard Overview</a>
       </li>
@@ -73,32 +70,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     </div>
   </aside>
 
-  <!-- Mobile Header -->
   <div class="md:hidden bg-surface shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
     <h4 class="text-2xl font-bold text-primary mb-0">Monstera</h4>
-    <button class="text-primary font-bold text-2xl">☰</button>
+    <button id="hamburger-btn" class="text-primary font-bold text-2xl">☰</button>
   </div>
 
   <!-- Main Content -->
   <main class="flex-1 p-6 md:p-10 overflow-y-auto">
-    <!-- Notifikasi -->
-    <?php if ($pesan_sukses != ''): ?>
-      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6 font-bold">
-        <?php echo $pesan_sukses; ?>
-      </div>
-    <?php endif; ?>
-    <?php if ($pesan_error != ''): ?>
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6 font-bold">
-        <?php echo $pesan_error; ?>
-      </div>
-    <?php endif; ?>
-
-    <!-- TABEL DELETE STOCK -->
     <div class="bg-surface rounded-lg shadow-lg p-6 md:p-8">
-      <h2 class="text-3xl font-bold text-red-600 mb-6">Delete Plant</h2>
-      <p class="text-contrast mb-6 border-l-4 border-red-500 pl-4 bg-red-50 p-3 rounded">
-        Warning: Menghapus data di sini akan menghilangkan tanaman dari database secara permanen.
-      </p>
+      <h2 class="text-3xl font-bold text-red-600 mb-6">Delete Product</h2>
 
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
@@ -125,9 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
               <td class="py-3 px-4">Rp <?php echo number_format($row['price'], 0, ',', '.'); ?></td>
               <td class="py-3 px-4"><?php echo $row['stock']; ?></td>
               <td class="py-3 px-4">
-                
-                <!-- Form untuk Delete Data -->
-                <!-- JS confirm() akan memunculkan popup peringatan sebelum submit form -->
                 <form method="POST" action="delete_stock.php" onsubmit="return confirm('Yakin ingin menghapus <?php echo htmlspecialchars(addslashes($row['name'])); ?>? Data tidak bisa dikembalikan.');">
                   <input type="hidden" name="action" value="delete">
                   <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
@@ -152,5 +129,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     </div>
   </main>
 
+  <script>
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    hamburgerBtn.addEventListener('click', () => {
+
+      sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('flex');
+      
+      sidebar.classList.toggle('fixed');
+      sidebar.classList.toggle('top-0');
+      sidebar.classList.toggle('left-0');
+      sidebar.classList.toggle('h-screen');
+    });
+  </script>
 </body>
 </html>
