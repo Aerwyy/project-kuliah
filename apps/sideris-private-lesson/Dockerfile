@@ -39,4 +39,4 @@ RUN a2dismod mpm_event mpm_worker mpm_prefork && a2enmod mpm_prefork
 EXPOSE 80
 
 # Jalankan Apache
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "a2dismod mpm_event mpm_worker && a2enmod mpm_prefork && apache2-foreground"]
