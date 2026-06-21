@@ -31,6 +31,9 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 RUN sed -i 's|/var/www/html|/var/www/html/apps/sideris-private-lesson/public|g' /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
+# Perbaikan error "More than one MPM loaded"
+RUN a2dismod mpm_event && a2enmod mpm_prefork
+
 # Expose port 80 untuk web
 EXPOSE 80
 
