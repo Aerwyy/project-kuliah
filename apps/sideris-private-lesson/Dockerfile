@@ -1,5 +1,5 @@
-# Menggunakan image PHP 8.2 dengan Apache
-FROM php:8.2-apache
+# Menggunakan image PHP 8.3 dengan Apache
+FROM php:8.3-apache
 
 # Set variabel agar Composer bisa dijalankan sebagai root/superuser
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Salin semua file dari repo ke dalam folder aplikasi di container
-# Ini memastikan file composer.json tersedia sebelum perintah composer dijalankan
 COPY . /var/www/html/apps/sideris-private-lesson
 
 # Tentukan direktori kerja ke folder aplikasi
