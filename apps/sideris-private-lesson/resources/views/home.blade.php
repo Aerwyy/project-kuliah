@@ -64,7 +64,7 @@
                             Platform belajar privat terpercaya dengan tutor berpengalaman. Kami menghubungkan siswa dengan pengajar profesional untuk mencapai potensi maksimal mereka dalam lingkungan belajar yang suportif
                         </p>
                         <div class="flex flex-wrap gap-4">
-                            <a href="#about" class="bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-xl shadow-primary/30 hover:-translate-y-1 hover:shadow-primary/50 transition-all text-lg">
+                            <a href="{{ route('login') }}" class="bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-xl shadow-primary/30 hover:-translate-y-1 hover:shadow-primary/50 transition-all text-lg">
                                 Mulai Belajar Sekarang
                             </a>
                         </div>
