@@ -1,25 +1,18 @@
-# Menggunakan image PHP 8.2 dengan Apache
 FROM php:8.2-apache
 
-# Install dependencies sistem
-RUN apt-get update && apt-get install -y \
-    libpng-dev libzip-dev zip unzip git nodejs npm \
-    && docker-php-ext-install pdo_mysql gd zip
+# Pindahkan ENV ke atas agar terbaca oleh perintah RUN selanjutnya
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Menginstal Composer secara global
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# ... (Instalasi dependencies sistem tetap sama) ...
 
-# Tentukan direktori kerja utama di dalam container
-WORKDIR /var/www/html
+# Salin semua file ke folder tujuan langsung
+COPY . /var/www/html/apps/sideris-private-lesson
 
-# Copy semua file dari repo ke dalam container
-COPY . .
-
-# Set working directory ke folder aplikasi laravel kamu
+# Tentukan direktori kerja
 WORKDIR /var/www/html/apps/sideris-private-lesson
 
-# Jalankan composer dengan mengarahkan ke path yang benar
-RUN composer install --no-dev --optimize-autoloader --working-dir=/var/www/html/apps/sideris-private-lesson
+# Baru jalankan composer (karena file sudah ada di folder ini)
+RUN composer install --no-dev --optimize-autoloader
 
 # Install Vite dependencies dan Build aset
 RUN npm install && npm run build
@@ -30,6 +23,7 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 # Konfigurasi Apache agar mengarah ke folder public Laravel
 RUN sed -i 's|/var/www/html|/var/www/html/apps/sideris-private-lesson/public|g' /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Expose port 80 untuk web
 EXPOSE 80
