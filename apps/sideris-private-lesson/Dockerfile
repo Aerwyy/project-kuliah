@@ -18,8 +18,8 @@ COPY . .
 # Set working directory ke folder aplikasi laravel kamu
 WORKDIR /var/www/html/apps/sideris-private-lesson
 
-# Install Laravel dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Jalankan composer dengan mengarahkan ke path yang benar
+RUN composer install --no-dev --optimize-autoloader --working-dir=/var/www/html/apps/sideris-private-lesson
 
 # Install Vite dependencies dan Build aset
 RUN npm install && npm run build
