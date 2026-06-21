@@ -38,5 +38,11 @@ RUN a2dismod mpm_event mpm_worker mpm_prefork && a2enmod mpm_prefork
 # Expose port 80 untuk web
 EXPOSE 80
 
+# Membuat file SQLite jika belum ada dan memberikan izin akses
+RUN mkdir -p /var/www/html/apps/sideris-private-lesson/database \
+    && touch /var/www/html/apps/sideris-private-lesson/database/database.sqlite \
+    && chown -R www-data:www-data /var/www/html/apps/sideris-private-lesson/database \
+    && chmod -R 775 /var/www/html/apps/sideris-private-lesson/database
+
 # Jalankan Apache
 CMD ["sh", "-c", "a2dismod mpm_event mpm_worker && a2enmod mpm_prefork && apache2-foreground"]
