@@ -31,12 +31,9 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 RUN sed -i 's|/var/www/html|/var/www/html/apps/sideris-private-lesson/public|g' /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
-# Perbaikan error "More than one MPM loaded" dengan cara menghapus symlink manual
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.conf \
-    && rm -f /etc/apache2/mods-enabled/mpm_event.load \
-    && rm -f /etc/apache2/mods-enabled/mpm_worker.conf \
-    && rm -f /etc/apache2/mods-enabled/mpm_worker.load \
-    && a2enmod mpm_prefork
+# Perbaikan error "More than one MPM loaded"
+# Kita nonaktifkan semua modul MPM terlebih dahulu, baru aktifkan prefork
+RUN a2dismod mpm_event mpm_worker mpm_prefork && a2enmod mpm_prefork
 
 # Expose port 80 untuk web
 EXPOSE 80
