@@ -24,6 +24,9 @@ RUN composer install --no-dev --optimize-autoloader
 # Install Vite dependencies dan Build aset
 RUN npm install && npm run build
 
+# Buat symlink untuk storage public (hapus jika sudah ada agar tidak conflict)
+RUN rm -rf public/storage && php artisan storage:link
+
 # Berikan izin akses folder storage dan cache
 RUN chown -R www-data:www-data storage bootstrap/cache
 
