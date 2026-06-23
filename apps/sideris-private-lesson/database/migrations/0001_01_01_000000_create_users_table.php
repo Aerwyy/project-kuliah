@@ -20,6 +20,13 @@ return new class extends Migration
             $table->string('foto_profil')->nullable();
         });
 
+        \Illuminate\Support\Facades\DB::table('users')->insert([
+            'nama' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('admin'),
+            'role' => 'admin',
+        ]);
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
