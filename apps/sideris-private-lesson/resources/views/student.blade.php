@@ -76,7 +76,12 @@
                     <img src="{{ $jadwal->tutor->foto_profil ? asset('storage/uploads/'.$jadwal->tutor->foto_profil) : asset('images/profile_1_1781900483861.png') }}" alt="Tutor Profile" class="w-20 h-20 rounded-full object-cover border-4 border-secondary shadow-md">
                     <div>
                         <h4 class="text-2xl font-bold">{{ $jadwal->tutor->user->nama }}</h4>
-                        <p class="text-white/90 font-bold mt-1 text-lg">{{ $jadwal->tutor->mata_pelajaran }}</p>
+                        <p class="text-white/90 font-bold mt-1 text-lg">
+                            {{ $jadwal->tutor->mata_pelajaran }}
+                            @if($jadwal->jadwal->isNotEmpty())
+                                - {{ $jadwal->jadwal->first()->judul_pertemuan }}
+                            @endif
+                        </p>
                     </div>
                 </div>
                 

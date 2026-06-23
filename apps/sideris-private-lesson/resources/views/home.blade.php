@@ -64,7 +64,7 @@
                             Platform belajar privat terpercaya dengan tutor berpengalaman. Kami menghubungkan siswa dengan pengajar profesional untuk mencapai potensi maksimal mereka dalam lingkungan belajar yang suportif
                         </p>
                         <div class="flex flex-wrap gap-4">
-                            <a href="{{ route('login') }}" class="bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-xl shadow-primary/30 hover:-translate-y-1 hover:shadow-primary/50 transition-all text-lg">
+                            <a href="#about" class="bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-xl shadow-primary/30 hover:-translate-y-1 hover:shadow-primary/50 transition-all text-lg">
                                 Mulai Belajar Sekarang
                             </a>
                         </div>
@@ -196,14 +196,14 @@
                     <!-- FAQ 1 -->
                     <details class="group bg-secondary rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer shadow-sm border border-gray-100 hover:border-primary/30 transition-colors" open>
                         <summary class="flex justify-between items-center font-bold text-white text-xl">
-                            Bagaimana mendaftar sebagai murid?
+                            Bagaimana cara mendaftar sebagai murid?
                             <span class="transition group-open:rotate-180 text-secondary bg-white/20 rounded-full p-2">
                                 <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                             </span>
                         </summary>
                         <p class="text-white mt-4 leading-relaxed text-lg border-t border-white/20 pt-4">
-                                Memulai sangat mudah! Cukup klik tombol "Mulai Belajar", isi formulir konsultasi singkat kami, dan kami akan mencocokkan Anda dengan tutor yang tepat dalam waktu 24 jam berdasarkan kebutuhan dan jadwal spesifik Anda.
-                            </p>
+                            Mendaftar sebagai murid sangat mudah! Cukup klik tombol "Mulai Belajar", isi formulir konsultasi singkat kami, dan kami akan mencocokkan Anda dengan tutor terbaik dalam waktu 24 jam berdasarkan kebutuhan dan jadwal Anda.
+                        </p>
                     </details>
                 </div>
             </div>

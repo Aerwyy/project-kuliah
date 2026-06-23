@@ -12,9 +12,10 @@ class StudentController extends Controller
     {
         $userId = session('user')['id'];
 
-        // Ambil jadwal mendatang (transaksi terbaru)
-        $jadwal = Transaksi::with('tutor.user')
+        // Ambil jadwal mendatang (hanya yang sudah di-assign admin)
+        $jadwal = Transaksi::with(['tutor.user', 'jadwal'])
             ->where('id_user_murid', $userId)
+            ->whereHas('jadwal')
             ->orderBy('tanggal_les', 'asc')
             ->where('tanggal_les', '>=', now()->toDateString())
             ->first();
